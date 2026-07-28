@@ -8,7 +8,7 @@ sdk_version: 4.44.0
 app_file: app.py
 pinned: false
 license: mit
-short_description: Medical image lesion segmentation with U-Net/UNet++ (PyTorch)
+short_description: Medical image lesion segmentation with U-Net (PyTorch)
 ---
 
 # 🏥 医疗影像病灶分割系统
