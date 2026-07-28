@@ -1,0 +1,71 @@
+# ============================================================
+# 医疗影像分割项目 - 快速演示配置
+# ============================================================
+# 此配置用于快速演示，训练轮次少，模型轻量，可在CPU上几分钟内完成训练
+
+seed: 42
+
+# -------------------- 数据配置 --------------------
+data:
+  img_size: 256
+  in_channels: 1
+  num_classes: 1
+  train_ratio: 0.7
+  val_ratio: 0.2
+  test_ratio: 0.1
+  batch_size: 8       # 批大小调大加快训练
+  num_workers: 0      # 单线程加载避免MacOS问题
+  normalize: true
+  augment: true
+
+# -------------------- 模型配置 --------------------
+model:
+  name: "unet"        # 使用经典U-Net，结构简单训练快
+  bilinear: true      # 使用双线性插值，训练更快
+  deep_supervision: false
+  base_channels: 32   # 减小通道数，模型更轻量
+
+# -------------------- 训练配置 --------------------
+training:
+  epochs: 10          # 只训练10轮，快速演示
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  dice_weight: 0.5
+  focal_weight: 0.5
+  bce_weight: 0.0
+  patience: 5         # 早停耐心值减小
+  scheduler: "cosine"
+  grad_clip: 1.0
+  amp: false
+  accumulation_steps: 1
+  val_interval: 1
+  save_interval: 5
+
+# -------------------- 损失函数配置 --------------------
+loss:
+  type: "dice_focal"
+  softmax: false
+  focal_gamma: 2.0
+  focal_alpha: 0.8
+  dice_smooth: 1.0
+
+# -------------------- 优化器配置 --------------------
+optimizer:
+  type: "adamw"
+  beta1: 0.9
+  beta2: 0.999
+  momentum: 0.9
+
+# -------------------- 路径配置 --------------------
+paths:
+  data_dir: "data/raw/simulated"
+  checkpoint_dir: "checkpoints"
+  log_dir: "logs"
+  output_dir: "outputs"
+
+# -------------------- 日志与可视化配置 --------------------
+logging:
+  level: "INFO"
+  tensorboard: false   # 演示不启动TensorBoard
+  print_model: false
+  progress_bar: true
